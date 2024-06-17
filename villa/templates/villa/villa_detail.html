@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <div class="page-heading header-text">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <span class="breadcrumb"><a href="#">Home</a>  /  Single Property</span>
+          <h3>Single Property</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section best-deal">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="section-heading">
+            <h2>{{ villa.address}}, {{ villa.region}} {{villa.zip_code}}</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <div class="tabs-content">
+            <div class="row">
+              <div class="nav-wrapper ">
+                <ul class="nav nav-tabs" role="tablist">
+                  {% if request.user.status == 2 or request.user.is_admin %}
+                  <li class="nav-item" role="presentation">
+                    <a href="{% url 'villa_update' villa.id %}"><button class="nav-link active" id="appartment-tab" data-bs-toggle="tab" data-bs-target="#appartment" type="button" role="tab" aria-controls="appartment" aria-selected="true">Изменить объект</button></a>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <a href="{% url 'villa_delete' villa.id %}"><button class="nav-link" id="villa-tab" data-bs-toggle="tab" data-bs-target="#villa" type="button" role="tab" aria-controls="villa" aria-selected="false">Удалить объект</button></a>
+                  </li>
+                  {% endif %}
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="penthouse-tab" data-bs-toggle="tab" data-bs-target="#penthouse" type="button" role="tab" aria-controls="penthouse" aria-selected="false">Penthouse</button>
+                  </li>
+                </ul>
+              </div>              
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="appartment" role="tabpanel" aria-labelledby="appartment-tab">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <div class="info-table">
+                        <ul>
+                          <li>Total Flat Space <span>{{  villa.area }}</span></li>
+                          <li>Floor number <span>{{ villa.floor_number }}</span></li>
+                          <li>Bedroom <span>{{ villa.bedroom }}</span></li>
+                          <li>Bathroom <span>{{ bathroom }}</span></li>
+                          <li> Parking <span>{{ villa.parking_space_capacity }}</span></li>
+                          <li> Payment <span>{{ villa.payment_method }}</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <img src="{{ villa.image.url }}" alt="">
+                    </div>
+                    <div class="col-lg-3">
+                      <p>{{ villa.description }}</p>
+                      <div class="icon-button">
+                        <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="villa" role="tabpanel" aria-labelledby="villa-tab">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <div class="info-table">
+                        <ul>
+                          <li>Total Flat Space <span>250 m2</span></li>
+                          <li>Floor number <span>26th</span></li>
+                          <li>Number of rooms <span>5</span></li>
+                          <li>Parking Available <span>Yes</span></li>
+                          <li>Payment Process <span>Bank</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <img src="assets/images/deal-02.jpg" alt="">
+                    </div>
+                    <div class="col-lg-3">
+                      <h4>Detail Info About New Villa</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut labore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
+                      <div class="icon-button">
+                        <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="penthouse" role="tabpanel" aria-labelledby="penthouse-tab">
+                  <div class="row">
+                    <div class="col-lg-3">
+                      <div class="info-table">
+                        <ul>
+                          <li>Total Flat Space <span>320 m2</span></li>
+                          <li>Floor number <span>34th</span></li>
+                          <li>Number of rooms <span>6</span></li>
+                          <li>Parking Available <span>Yes</span></li>
+                          <li>Payment Process <span>Bank</span></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <img src="assets/images/deal-03.jpg" alt="">
+                    </div>
+                    <div class="col-lg-3">
+                      <h4>Extra Info About Penthouse</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, do eiusmod tempor pack incididunt ut Kinfolk tonx seitan crucifix 3 wolf moon bicycle rights keffiyeh snackwave wolf same vice, chillwave vexillologistlabore et dolore magna aliqua quised ipsum suspendisse. <br><br>Swag fanny pack lyft blog twee. JOMO ethical copper mug, succulents typewriter shaman DIY kitsch twee taiyaki fixie hella venmo after messenger poutine next level humblebrag swag franzen.</p>
+                      <div class="icon-button">
+                        <a href="#"><i class="fa fa-calendar"></i> Schedule a visit</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </body>
+{% endblock %}
