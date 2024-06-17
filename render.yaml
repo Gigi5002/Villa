@@ -1,10 +1,11 @@
 services:
   - type: web
-    name: motion-web
+    name: my-django-app
+    env: python
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
-    startCommand: gunicorn core.wsgi:application --bind 0.0.0.0:10000 --workers 4
+    startCommand: gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 4
     envVars:
       - key: DJANGO_SECRET_KEY
         generateValue: true
