@@ -1,8 +1,14 @@
 from pathlib import Path
-import os
+
+ALLOWED_HOSTS = ['*']  # Позволяет принимать запросы с любых хостов (не рекомендуется для продакшена)
+PORT = 8000  # Порт, который будет использоваться Django
+
+# Или для использования переменной окружения, если Render предоставляет такую возможность:
 
 # ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost').split(',')
-ALLOWED_HOSTS = ['*']
+# settings.py
+
+# ALLOWED_HOSTS = ['villa-tg1m.onrender.com']
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

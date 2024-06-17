@@ -13,8 +13,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем все файлы проекта в контейнер
 COPY . .
 
+# Копируем файл .env в контейнер
+COPY .env .
+
 # Сбор статических файлов
 RUN python manage.py collectstatic --noinput
 
 # Команда для запуска Django с использованием gunicorn
 CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000"]
+
+ENV PORT=8000
