@@ -8,3 +8,7 @@ urlpatterns = [
     path('', include('villa.urls')),
     path('', include('user.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Добавляем обработку статических файлов в режиме разработки
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

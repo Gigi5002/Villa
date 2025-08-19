@@ -3,8 +3,6 @@
 
 {% block content %}
 
-<body>
-
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -18,100 +16,169 @@
   </div>
   <!-- ***** Preloader End ***** -->
 
-  <div class="sub-header">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-8">
-          <ul class="info">
-            <li><i class="fa fa-envelope"></i> info@company.com</li>
-            <li><i class="fa fa-map"></i> Sunny Isles Beach, FL 33160</li>
-          </ul>
-        </div>
-        <div class="col-lg-4 col-md-4">
-          <ul class="social-links">
-            <li><a href="#"><i class="fab fa-facebook"></i></a></li>
-            <li><a href="https://x.com/minthu" target="_blank"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <div class="page-heading header-text">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <span class="breadcrumb"><a href="#">Home</a> / Properties</span>
-          <h3>Properties</h3>
+          <span class="breadcrumb"><a href="{% url 'index' %}">Home</a> / Properties</span>
+          <h3>All Properties</h3>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="section properties">
+  <!-- Filters Section -->
+  <div class="section">
     <div class="container">
-<!--      <ul class="properties-filter">-->
-<!--        <li>-->
-<!--          <a class="is_active" href="#!" data-filter="*">Show All</a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a href="#!" data-filter=".adv">Apartment</a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a href="#!" data-filter=".str">Villa House</a>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a href="#!" data-filter=".rac">Penthouse</a>-->
-<!--        </li>-->
-<!--      </ul>-->
-      <form method="get" action=".">
-        {{  filter.form }}
-        <button type="submit">Применить фильтр</button>
-
-      </form>
-      <div class="row properties-box">
-        {% for villa in villas %}
-          <div class="col-lg-4 col-md-6 align-self-center mb-30 properties-items col-md-6 adv">
-          <div class="item">
-            <a href="property-details.html"><img src="{{ villa.image.url}}" alt="" style="max-height: 50000px; object-fit: contain;"></a>
-            <span class="category">{{ villa.category }}</span>
-            <h6>${{ villa.price }}</h6>
-            <h4><a href="property-details.html">{{ villa.address}}, {{ villa.region}} {{villa.zip_code}}</a></h4>
-            <ul>
-              <li>Bedrooms: <span>{{ villa.bedroom}}</span></li>
-              <li>Bathrooms: <span>{{ villa.bathroom}}</span></li>
-              <li>Area: <span>{{ villa.area }}m2</span></li>
-              <li>Floor: <span>{{ villa.floor_number }}</span></li>
-              <li>Parking: <span>{{ villa.parking_space_capacity}}</span></li>
-            </ul>
-            <div class="main-button">
-              <a href="property-details.html">Schedule a visit</a>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <h5><i class="fa fa-filter"></i> Filter Properties</h5>
+            </div>
+            <div class="card-body">
+              <form method="get" class="row g-3">
+                <div class="col-md-3">
+                  <label for="category" class="form-label">Category</label>
+                  <select name="category" id="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                      <option value="{{ category }}" {% if request.GET.category == category %}selected{% endif %}>
+                        {{ category }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label for="min_price" class="form-label">Min Price</label>
+                  <input type="number" name="min_price" id="min_price" class="form-control" 
+                         value="{{ request.GET.min_price }}" placeholder="Min Price">
+                </div>
+                <div class="col-md-3">
+                  <label for="max_price" class="form-label">Max Price</label>
+                  <input type="number" name="max_price" id="max_price" class="form-control" 
+                         value="{{ request.GET.max_price }}" placeholder="Max Price">
+                </div>
+                <div class="col-md-3">
+                  <label for="bedrooms" class="form-label">Bedrooms</label>
+                  <select name="bedrooms" id="bedrooms" class="form-select">
+                    <option value="">Any</option>
+                    <option value="1" {% if request.GET.bedrooms == "1" %}selected{% endif %}>1+</option>
+                    <option value="2" {% if request.GET.bedrooms == "2" %}selected{% endif %}>2+</option>
+                    <option value="3" {% if request.GET.bedrooms == "3" %}selected{% endif %}>3+</option>
+                    <option value="4" {% if request.GET.bedrooms == "4" %}selected{% endif %}>4+</option>
+                  </select>
+                </div>
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-primary me-2">
+                    <i class="fa fa-search"></i> Apply Filters
+                  </button>
+                  <a href="{% url 'villa_list' %}" class="btn btn-secondary">
+                    <i class="fa fa-times"></i> Clear Filters
+                  </a>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-        {% endfor %}
-        </div>
-  <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-  </div>
+      </div>
     </div>
   </div>
 
-  </body>
-    {% endblock %}
+  <!-- Properties Section -->
+  <div class="properties section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading text-center">
+            <h6>| Properties</h6>
+            <h2>We Found {{ total_properties }} Properties For You</h2>
+          </div>
+        </div>
+      </div>
+      
+      {% if villas %}
+        <div class="row">
+          {% for villa in villas %}
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="item h-100">
+                <a href="{% url 'villa_detail' villa.id %}">
+                  <img src="{{ villa.image.url }}" alt="{{ villa.address }}" 
+                       style="height: 250px; object-fit: cover; width: 100%;">
+                </a>
+                <span class="category">{{ villa.category }}</span>
+                <h6 class="text-success">${{ villa.price }}</h6>
+                <h4><a href="{% url 'villa_detail' villa.id %}">{{ villa.address }}, {{ villa.region }} {{ villa.zip_code }}</a></h4>
+                <ul>
+                  <li>Bedrooms: <span>{{ villa.bedroom }}</span></li>
+                  <li>Bathrooms: <span>{{ villa.bathroom }}</span></li>
+                  <li>Area: <span>{{ villa.area }}m²</span></li>
+                  <li>Floor: <span>{{ villa.floor_number }}</span></li>
+                  <li>Parking: <span>{{ villa.parking_space_capacity }}</span></li>
+                </ul>
+                <div class="main-button">
+                  <a href="{% url 'villa_detail' villa.id %}">View Details</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+          <div class="row">
+            <div class="col-lg-12">
+              <nav aria-label="Properties pagination">
+                <ul class="pagination justify-content-center">
+                  {% if page_obj.has_previous %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page=1{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.bedrooms %}&bedrooms={{ request.GET.bedrooms }}{% endif %}">
+                        <i class="fa fa-angle-double-left"></i> First
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.bedrooms %}&bedrooms={{ request.GET.bedrooms }}{% endif %}">
+                        <i class="fa fa-angle-left"></i> Previous
+                      </a>
+                    </li>
+                  {% endif %}
+                  
+                  <li class="page-item active">
+                    <span class="page-link">
+                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </span>
+                  </li>
+                  
+                  {% if page_obj.has_next %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.bedrooms %}&bedrooms={{ request.GET.bedrooms }}{% endif %}">
+                        Next <i class="fa fa-angle-right"></i>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.min_price %}&min_price={{ request.GET.min_price }}{% endif %}{% if request.GET.max_price %}&max_price={{ request.GET.max_price }}{% endif %}{% if request.GET.bedrooms %}&bedrooms={{ request.GET.bedrooms }}{% endif %}">
+                        Last <i class="fa fa-angle-double-right"></i>
+                      </a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </nav>
+            </div>
+          </div>
+        {% endif %}
+        
+      {% else %}
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <div class="alert alert-info">
+              <h4><i class="fa fa-info-circle"></i> No Properties Found</h4>
+              <p>Sorry, no properties match your current filters. Try adjusting your search criteria.</p>
+              <a href="{% url 'villa_list' %}" class="btn btn-primary">View All Properties</a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+{% endblock %}

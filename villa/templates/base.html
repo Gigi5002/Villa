@@ -41,17 +41,18 @@ https://templatemo.com/tm-591-villa-agency
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                      <li><a href="index.html" class="active">Home</a></li>
-                      <li><a href="properties.html">Properties</a></li>
-                      <li><a href="property-details.html">Property Details</a></li>
-                      <li><a href="contact.html">Contact Us</a></li>
-                        {% if request.user.is_authenticated %}
+                      <li><a href="{% url 'index' %}" class="{% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a></li>
+                      <li><a href="{% url 'villa_list' %}" class="{% if request.resolver_match.url_name == 'villa_list' %}active{% endif %}">Properties</a></li>
+                      {% if request.user.is_authenticated %}
+                        {% if request.user.status == 2 or request.user.is_admin %}
+                        <li><a href="{% url 'admin:index' %}">Admin Panel</a></li>
+                        {% endif %}
                         <li><a href="{% url 'logout' %}">&nbsp;&nbsp;&nbsp;Выйти</a></li>
-                      <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ request.user.username }}</a></li>
-                        {% else %}
+                        <li><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ request.user.username }}</a></li>
+                      {% else %}
                         <li><a href="{% url 'login' %}">&nbsp;&nbsp;&nbsp;Войти</a></li>
                         <li><a href="{% url 'register' %}">&nbsp;&nbsp;&nbsp;Авторизация</a></li>
-                        {% endif %}
+                      {% endif %}
                   </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -63,14 +64,27 @@ https://templatemo.com/tm-591-villa-agency
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
-    {% block content %}
+  
+  <!-- Messages -->
+  {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  {% block content %}
 
-    {% endblock %}
+  {% endblock %}
 
-    <footer>
+  <footer>
     <div class="container">
       <div class="col-lg-8">
-        <p>Copyright © 2048 Villa Agency Co., Ltd. All rights reserved.
+        <p>Copyright © 2024 Villa Agency Co., Ltd. All rights reserved.
 
         Design: <a rel="nofollow" href="https://templatemo.com" target="_blank">TemplateMo</a></p>
       </div>

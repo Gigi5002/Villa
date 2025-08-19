@@ -3,8 +3,6 @@
 
 {% block content %}
 
-<body>
-
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -22,63 +20,220 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-          <span class="breadcrumb"><a href="#">Home</a>  /  Contact Us</span>
-          <h3>Contact Us</h3>
+          <span class="breadcrumb"><a href="{% url 'index' %}">Home</a> / <a href="{% url 'villa_list' %}">Properties</a> / <a href="{% url 'villa_detail' villa.id %}">{{ villa.address }}</a> / Edit</span>
+          <h3>Edit Property</h3>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="contact-page section">
+  <div class="section">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="section-heading">
-            <h6>| Contact Us</h6>
-            <h2>Get In Touch With Our Agents</h2>
-          </div>
-          <p>When you really need to download free CSS templates, please remember our website TemplateMo. Also, tell your friends about our website. Thank you for visiting. There is a variety of Bootstrap HTML CSS templates on our website. If you need more information, please contact us.</p>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="item phone">
-                <img src="assets/images/phone-icon.png" alt="" style="max-width: 52px;">
-                <h6>010-020-0340<br><span>Phone Number</span></h6>
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="card">
+            <div class="card-header bg-warning text-dark">
+              <h4 class="mb-0"><i class="fa fa-edit"></i> Edit Property Information</h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="current-image mb-3">
+                    <h6>Current Image:</h6>
+                    <img src="{{ villa.image.url }}" alt="{{ villa.address }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                      <div class="alert alert-danger">
+                        <h6>Please correct the following errors:</h6>
+                        {{ form.errors }}
+                      </div>
+                    {% endif %}
+                    
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.category.id_for_label }}">Category *</label>
+                          {{ form.category }}
+                          {% if form.category.errors %}
+                            <div class="text-danger">{{ form.category.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.material.id_for_label }}">Material *</label>
+                          {{ form.material }}
+                          {% if form.material.errors %}
+                            <div class="text-danger">{{ form.material.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.address.id_for_label }}">Address *</label>
+                          {{ form.address }}
+                          {% if form.address.errors %}
+                            <div class="text-danger">{{ form.address.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.region.id_for_label }}">Region *</label>
+                          {{ form.region }}
+                          {% if form.region.errors %}
+                            <div class="text-danger">{{ form.region.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.zip_code.id_for_label }}">Zip Code *</label>
+                          {{ form.zip_code }}
+                          {% if form.zip_code.errors %}
+                            <div class="text-danger">{{ form.zip_code.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.price.id_for_label }}">Price *</label>
+                          {{ form.price }}
+                          {% if form.price.errors %}
+                            <div class="text-danger">{{ form.price.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.area.id_for_label }}">Area (m²) *</label>
+                          {{ form.area }}
+                          {% if form.area.errors %}
+                            <div class="text-danger">{{ form.area.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.floor_number.id_for_label }}">Floor Number *</label>
+                          {{ form.floor_number }}
+                          {% if form.floor_number.errors %}
+                            <div class="text-danger">{{ form.floor_number.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.bedroom.id_for_label }}">Bedrooms *</label>
+                          {{ form.bedroom }}
+                          {% if form.bedroom.errors %}
+                            <div class="text-danger">{{ form.bedroom.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-lg-4">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.bathroom.id_for_label }}">Bathrooms *</label>
+                          {{ form.bathroom }}
+                          {% if form.bathroom.errors %}
+                            <div class="text-danger">{{ form.bathroom.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.parking_space_capacity.id_for_label }}">Parking Spaces *</label>
+                          {{ form.parking_space_capacity }}
+                          {% if form.parking_space_capacity.errors %}
+                            <div class="text-danger">{{ form.parking_space_capacity.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.security.id_for_label }}">Security *</label>
+                          {{ form.security }}
+                          {% if form.security.errors %}
+                            <div class="text-danger">{{ form.security.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.payment_method.id_for_label }}">Payment Method *</label>
+                          {{ form.payment_method }}
+                          {% if form.payment_method.errors %}
+                            <div class="text-danger">{{ form.payment_method.errors }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group mb-3">
+                          <label for="{{ form.image.id_for_label }}">New Image</label>
+                          {{ form.image }}
+                          {% if form.image.errors %}
+                            <div class="text-danger">{{ form.image.errors }}</div>
+                          {% endif %}
+                          <small class="form-text text-muted">Leave empty to keep current image</small>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                      <label for="{{ form.description.id_for_label }}">Description *</label>
+                      {{ form.description }}
+                      {% if form.description.errors %}
+                        <div class="text-danger">{{ form.description.errors }}</div>
+                      {% endif %}
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                      <div class="form-check">
+                        {{ form.is_active }}
+                        <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                          Property is active and visible to users
+                        </label>
+                      </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                      <div class="col-lg-12 text-center">
+                        <button type="submit" class="btn btn-warning btn-lg me-3">
+                          <i class="fa fa-save"></i> Save Changes
+                        </button>
+                        <a href="{% url 'villa_detail' villa.id %}" class="btn btn-secondary btn-lg">
+                          <i class="fa fa-times"></i> Cancel
+                        </a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-            <div class="col-lg-12">
-              <div class="item email">
-                <img src="assets/images/email-icon.png" alt="" style="max-width: 52px;">
-                <h6>info@villa.co<br><span>Business Email</span></h6>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <form id="contact-form" action="" method="post" enctype="multipart/form-data">
-            <div class="row">
-              <div class="col-lg-12">
-                <fieldset>
-                  {% csrf_token %}
-                  {{ form.as_p }}
-                </fieldset>
-              </div>
-              <div class="col-lg-12">
-                <fieldset>
-                  <button type="submit" id="form-submit" class="orange-button">Send Message</button>
-                </fieldset>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="col-lg-12">
-          <div id="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12469.776493332698!2d-80.14036379941481!3d25.907788681148624!2m3!1f357.26927939317244!2f20.870722720054623!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x88d9add4b4ac788f%3A0xe77469d09480fcdb!2sSunny%20Isles%20Beach!5e1!3m2!1sen!2sth!4v1642869952544!5m2!1sen!2sth" width="100%" height="500px" frameborder="0" style="border:0; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);" allowfullscreen=""></iframe>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-  </body>
 
 {% endblock %}
