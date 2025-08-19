@@ -19,7 +19,7 @@ def index_view(request):
         }
         return render(request, 'villa/index.html', context)
     except Exception as e:
-        messages.error(request, f"Error loading properties: {str(e)}")
+        messages.error(request, f"Ошибка загрузки недвижимости: {str(e)}")
         return render(request, 'villa/index.html', {'villas': []})
 
 
@@ -75,10 +75,10 @@ def villa_detail_view(request, pk):
         return render(request, 'villa/villa_detail.html', context)
         
     except Villa.DoesNotExist:
-        messages.error(request, "Property not found or not available.")
+        messages.error(request, "Недвижимость не найдена или недоступна.")
         return redirect('villa_list')
     except Exception as e:
-        messages.error(request, f"Error loading property: {str(e)}")
+        messages.error(request, f"Ошибка загрузки недвижимости: {str(e)}")
         return redirect('villa_list')
 
 
@@ -94,26 +94,26 @@ def villa_update_view(request, pk):
             
             if form.is_valid():
                 form.save()
-                messages.success(request, "Property updated successfully!")
+                messages.success(request, "Недвижимость успешно обновлена!")
                 return redirect('villa_detail', villa.id)
             else:
-                messages.error(request, "Please correct the errors below.")
+                messages.error(request, "Пожалуйста, исправьте ошибки ниже.")
         else:
             form = VillaUpdateForm(instance=villa)
         
         context = {
             'form': form,
             'villa': villa,
-            'title': 'Edit Property'
+            'title': 'Редактировать недвижимость'
         }
         
         return render(request, 'villa/villa_update.html', context)
         
     except Villa.DoesNotExist:
-        messages.error(request, "Property not found.")
+        messages.error(request, "Недвижимость не найдена.")
         return redirect('villa_list')
     except Exception as e:
-        messages.error(request, f"Error updating property: {str(e)}")
+        messages.error(request, f"Ошибка обновления недвижимости: {str(e)}")
         return redirect('villa_list')
 
 
@@ -126,19 +126,19 @@ def villa_delete_view(request, pk):
         
         if request.method == 'POST':
             villa.delete()
-            messages.success(request, "Property deleted successfully!")
+            messages.success(request, "Недвижимость успешно удалена!")
             return redirect('villa_list')
         
         # Показываем страницу подтверждения удаления
         context = {
             'villa': villa,
-            'title': 'Delete Property'
+            'title': 'Удалить недвижимость'
         }
         return render(request, 'villa/villa_delete_confirm.html', context)
         
     except Villa.DoesNotExist:
-        messages.error(request, "Property not found.")
+        messages.error(request, "Недвижимость не найдена.")
         return redirect('villa_list')
     except Exception as e:
-        messages.error(request, f"Error deleting property: {str(e)}")
+        messages.error(request, f"Ошибка удаления недвижимости: {str(e)}")
         return redirect('villa_list')
